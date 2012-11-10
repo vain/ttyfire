@@ -131,14 +131,16 @@ if __name__ == "__main__":
     stream.attach(proc_message).start()
 
     while True:
-        typed = raw_input()
-        if typed == "/quit":
-            stream.stop().join()
-            room.leave()
-            sys.exit(0)
-        elif typed == "/users":
-            list_users(room)
-        else:
-            room.speak(typed)
+        with open("in", "r") as pipe:
+            lines = [i.strip() for i in pipe.readlines()]
+            for cmd in lines:
+                if cmd == "/quit":
+                    stream.stop().join()
+                    room.leave()
+                    sys.exit(0)
+                elif cmd == "/users":
+                    list_users(room)
+                else:
+                    room.speak(cmd)
 
 # vim: set ts=4 sw=4 et sta :
