@@ -2,6 +2,22 @@
 
 [[ -z "$1" ]] && { echo "Usage: $(basename "$0") <room>" >&2; exit 1; }
 
+session=${1,,}
+session="cf_${session//[^a-z0-9]/}"
+
+if screen -ls | sed -rn 's/^\t[^.]+\.(.*)\t.*/\1/p' | grep -q "$session"
+then
+	cat <<-EOF
+	A ttyfire instance for this channel is already running.
+	Consider reattaching to that screen session. Unfortunately,
+	I cannot do this for you in a comfortable way because the
+	window layout is lost.
+
+	(Consider switching from GNU screen to tmux.)
+	EOF
+	exit 1
+fi
+
 tmp=$(mktemp -d)
 trap 'cd /; rm -Rf "$tmp"' EXIT
 cd "$tmp"
@@ -21,7 +37,4 @@ resize +5
 screen -t "Input" ttyfire_pipefiller
 EOF
 
-session=${1,,}
-session=${session//[^a-z0-9]/}
-
-screen -S "cf_$session" -c .screenrc
+screen -S "$session" -c .screenrc
