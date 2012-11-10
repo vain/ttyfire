@@ -19,3 +19,7 @@ Dependencies:
 	GNU bash with readline support
 	GNU screen
 	Your terminal should support colors
+
+TODOs:
+
+	Make the script pretty. It's a quick hack.
