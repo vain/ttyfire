@@ -1,0 +1,19 @@
+Minimalistic client for 37signals' Campfire.
+
+Create a ~/.ttyfire:
+
+	yoursubdomain
+	your@login.exmpale
+	yourpassword
+
+Launch ttyfire:
+
+	./ttyfire "Name of the room"
+
+Dependencies:
+
+	Python 2
+	pyfire https://github.com/mariano/pyfire
+	GNU bash with readline support
+	GNU screen
+	Your terminal should support colors
