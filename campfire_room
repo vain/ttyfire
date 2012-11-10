@@ -55,16 +55,16 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
         catch_links(message.body)
         show(message, "%s: %s" % (user, wrapped(message.body)))
     elif message.is_upload():
-        show(message, "%s: %s uploaded file %s: %s" % (S["--"],
+        show(message, "%s: %s uploaded file %s: %s" % (S["***"],
                                                        user,
                                                        message.upload["name"],
                                                        message.upload["url"]))
     elif message.is_topic_change():
-        show(message, "%s: %s changed topic to '%s'" % (S["--"],
+        show(message, "%s: %s changed topic to '%s'" % (S["***"],
                                                         user,
                                                         message.body))
     elif message.is_kick():
-        show(message, "%s: %s kicks (whom? nobody knows)" % (S["--"],
+        show(message, "%s: %s kicks (whom? nobody knows)" % (S["***"],
                                                              user))
     elif message.is_timestamp():
         pass
@@ -123,9 +123,9 @@ NICK_COLORS = ["red", "green", "yellow", "blue", "magenta", "cyan", "white",
                "bright_magenta", "bright_cyan", "bright_white"]
 
 S = {
-     "<--": C["red"] + trim_len("<--") + " " + C["reset"],
-     "-->": C["blue"] + trim_len("-->") + " " + C["reset"],
-     "--": C["magenta"] + trim_len("--") + " " + C["reset"],
+     "<--": C["red"] + trim_len("<-- ") + C["reset"],
+     "-->": C["blue"] + trim_len("--> ") + C["reset"],
+     "***": C["magenta"] + trim_len("*** ") + C["reset"],
     }
 
 
