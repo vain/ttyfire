@@ -78,7 +78,7 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
 
 def list_users(room):
     print ""
-    print "Users in room: %s" % ", ".join([colored_name(i["name"])
+    print "Users in room: %s" % ", ".join([colored_name(trim_len(i["name"]))
                                            for i in room.get_users()])
     print ""
 
