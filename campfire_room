@@ -80,6 +80,16 @@ def list_users(room):
                                            for i in room.get_users()])
     print ""
 
+def list_uploads(room):
+    print ""
+    print "Uploads:"
+    for u in room.get_uploads():
+        catch_links(u["full_url"])
+        print "\t%s" % u["name"]
+        print "\t%s" % u["full_url"]
+        print ""
+    print ""
+
 def list_rooms(campfire):
     print ""
     print "Rooms: %s" % ", ".join([i["name"] for i in campfire.get_rooms()])
@@ -145,6 +155,8 @@ if __name__ == "__main__":
                     sys.exit(0)
                 elif cmd == "/users":
                     list_users(room)
+                elif cmd == "/uploads":
+                    list_uploads(room)
                 elif cmd == "/rooms":
                     list_rooms(campfire)
                 else:
