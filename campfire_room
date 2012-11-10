@@ -80,6 +80,11 @@ def list_users(room):
                                            for i in room.get_users()])
     print ""
 
+def list_rooms(campfire):
+    print ""
+    print "Rooms: %s" % ", ".join([i["name"] for i in campfire.get_rooms()])
+    print ""
+
 def error(e):
     print("Stream STOPPED due to ERROR: %s" % e)
 
@@ -140,6 +145,8 @@ if __name__ == "__main__":
                     sys.exit(0)
                 elif cmd == "/users":
                     list_users(room)
+                elif cmd == "/rooms":
+                    list_rooms(campfire)
                 else:
                     room.speak(cmd)
 
