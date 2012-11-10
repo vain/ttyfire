@@ -1,0 +1,24 @@
+#!/bin/bash
+
+[[ -z "$1" ]] && { echo "Usage: $(basename "$0") <room>" >&2; exit 1; }
+
+tmp=$(mktemp -d)
+trap 'cd /; rm -Rf "$tmp"' EXIT
+cd "$tmp"
+
+mkfifo 'in'
+
+cat ~/.screenrc - >.screenrc <<EOF
+caption string '%{= db}%-w%{= bk}%n %t%{-}%+w'
+
+split
+resize max
+screen -t out campfire_room "$1"
+# For testing purposes:
+#screen -t out bash -c 'while sleep 0.5; do cat in; done'
+focus
+resize +5
+screen -t in ttyfire_pipefiller
+EOF
+
+screen -c .screenrc

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+HISTFILE=inputs
+
+while clear
+do
+	read -e
+	if [[ -n "$REPLY" ]]
+	then
+		history -s "$REPLY"
+		echo "$REPLY" >>'in'
+	fi
+done
