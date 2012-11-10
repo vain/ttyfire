@@ -10,6 +10,8 @@ Launch ttyfire:
 
 	./ttyfire "Name of the room"
 
+Best way to quit is to use "^A \".
+
 Dependencies:
 
 	Python 2
