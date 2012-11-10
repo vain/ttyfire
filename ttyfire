@@ -21,4 +21,7 @@ resize +5
 screen -t "Input" ttyfire_pipefiller
 EOF
 
-screen -c .screenrc
+session=${1,,}
+session=${session//[^a-z0-9]/}
+
+screen -S "cf_$session" -c .screenrc
