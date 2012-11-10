@@ -1,7 +1,5 @@
 #!/bin/bash
 
-HISTFILE=inputs
-
 while clear
 do
 	read -e
