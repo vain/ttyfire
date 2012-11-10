@@ -49,6 +49,8 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
         show(message, "%s: %s" % (S["-->"], user))
     elif not hide_joinpart and message.is_leaving():
         show(message, "%s: %s" % (S["<--"], user))
+    elif not hide_joinpart and message.is_kick():
+        show(message, "%s: %s has been kicked" % (S["<--"], user))
     elif message.is_tweet():
         show(message, "%s: %s tweeted '%s' - %s" % (user,
                                                      message.tweet["user"], 
@@ -66,9 +68,6 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
         show(message, "%s: %s changed topic to '%s'" % (S["***"],
                                                         user,
                                                         message.body))
-    elif message.is_kick():
-        show(message, "%s: %s kicks (whom? nobody knows)" % (S["***"],
-                                                             user))
     elif message.is_timestamp():
         pass
     elif not hide_unknown:
