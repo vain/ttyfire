@@ -40,6 +40,15 @@ def catch_links(text):
         for i in re.findall(r'https?://[^ )]+', text, re.I):
             print >> fp, i
 
+def save_paste(message):
+    # XXX: This does not create 100% unique name. When the same user
+    # creates a paste in multiple rooms at the exact same time, there's
+    # going to be a collision.
+    user = re.sub(r'[^a-z0-9]', "_", message.user.name.lower())
+    stamp = message.get_data()["created_at"].strftime("%F--%H-%M-%S")
+    with open("/tmp/cf--%s--%s" % (user, stamp), "w") as fp:
+        fp.write(message.body.encode("UTF-8"))
+
 def proc_message(message, hide_joinpart=False, hide_unknown=False):
     user = ""
     if message.user:
@@ -59,6 +68,8 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
     elif message.is_text():
         catch_links(message.body)
         show(message, "%s: %s" % (user, wrapped(message.body)))
+        if message.is_paste():
+            save_paste(message)
     elif message.is_upload():
         show(message, "%s: %s uploaded file %s: %s" % (S["***"],
                                                        user,
