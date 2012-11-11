@@ -10,14 +10,14 @@ Launch ttyfire:
 
 	./ttyfire "Name of the room"
 
-Best way to quit is to use "^A \".
+Best way to quit is to use "^A \". This key is bound to "kill-session".
 
 Dependencies:
 
 	Python 2
 	pyfire https://github.com/mariano/pyfire
 	GNU bash with readline support
-	GNU screen
+	tmux
 	Your terminal should support colors
 
 TODOs:

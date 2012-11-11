@@ -137,8 +137,11 @@ if __name__ == "__main__":
     with open(os.path.expanduser("~/.ttyfire"), "r") as fp:
         config = [i.strip() for i in fp.readlines()]
 
+    pipe_name = sys.argv[1]
+    room_name = sys.argv[2]
+
     campfire = pyfire.Campfire(config[0], config[1], config[2], ssl=True)
-    room = campfire.get_room_by_name(sys.argv[1])
+    room = campfire.get_room_by_name(room_name)
     room.join()
 
     for i in room.recent():
@@ -150,7 +153,7 @@ if __name__ == "__main__":
     stream.attach(proc_message).start()
 
     while True:
-        with open("in", "r") as pipe:
+        with open(pipe_name, "r") as pipe:
             lines = [i.strip() for i in pipe.readlines()]
             for cmd in lines:
                 if cmd == "/quit":

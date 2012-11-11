@@ -1,11 +1,13 @@
 #!/bin/bash
 
+pipe_name=${1:-in}
+
 while clear
 do
 	read -e
 	if [[ -n "$REPLY" ]]
 	then
 		history -s "$REPLY"
-		echo "$REPLY" >>'in'
+		echo "$REPLY" >>"$pipe_name"
 	fi
 done
