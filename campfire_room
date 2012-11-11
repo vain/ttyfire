@@ -148,6 +148,18 @@ def paste_x(room):
 def error(e, room):
     print "\"%s\" error: %s" % (room.name, e)
 
+def show_help():
+    print ""
+    print "/users      List users in the current room."
+    print "/rooms      List all rooms."
+    print "/uploads    List uploads in the current room."
+    print "/send $f    Upload a file."
+    print "/pastef $f  Paste a file."
+    print "/pastex     Paste from X11 clipboard."
+    print "/quit       Don't use this. :-)"
+    print ""
+
+
 C = {
      "reset":    "\033[0m",
      "bold":     "\033[1m",
@@ -227,6 +239,8 @@ if __name__ == "__main__":
                     paste_x(room)
                 elif cmd == "/rooms":
                     list_rooms(campfire)
+                elif cmd.startswith("/"):
+                    show_help()
                 else:
                     room.speak(cmd)
 
