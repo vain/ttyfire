@@ -34,6 +34,13 @@ def wrapped(text, width=70):
         lines[i] = (" " * 34) + lines[i]
     return "\n".join(lines)
 
+def highlight(text):
+    for i in HIGHLIGHTS:
+        pat = re.compile("(" + i + ")", re.IGNORECASE)
+        text = pat.sub(C["reversed"] + C["magenta"] + r"\1" + C["reset"],
+                       text)
+    return text
+
 def catch_links(text):
     text = text.replace("\r", "")
     text = text.replace("\n", "")
@@ -69,7 +76,7 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
                                                      message.tweet["url"]))
     elif message.is_text():
         catch_links(message.body)
-        show(message, "%s: %s" % (user, wrapped(message.body)))
+        show(message, "%s: %s" % (user, highlight(wrapped(message.body))))
         if message.is_paste():
             save_paste(message)
     elif message.is_upload():
@@ -115,8 +122,9 @@ def error(e, room):
     print "Stream for room \"%s\" stopped due to error: %s" % (room.name, e)
 
 C = {
-     "reset":  "\033[0m",
-     "bold":   "\033[1m",
+     "reset":    "\033[0m",
+     "bold":     "\033[1m",
+     "reversed": "\033[7m",
 
      "black":   "\033[30m",
      "red":     "\033[31m",
@@ -151,6 +159,8 @@ S = {
 if __name__ == "__main__":
     with open(os.path.expanduser("~/.ttyfire"), "r") as fp:
         config = [i.strip() for i in fp.readlines()]
+
+    HIGHLIGHTS = config[3].split(";")
 
     pipe_name = sys.argv[1]
     room_name = sys.argv[2]

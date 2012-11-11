@@ -6,6 +6,7 @@ Create a ~/.ttyfire:
 	yoursubdomain
 	your@login.exmpale
 	yourpassword
+	highlight1;another highlight;highlight3
 
 
 Launch ttyfire:
