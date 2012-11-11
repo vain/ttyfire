@@ -28,10 +28,22 @@ def trim_len(text, maxlen=12):
         text = ("{0:>" + str(maxlen) + "}").format(text)
     return text
 
-def wrapped(text, width=70):
+def wrapped(text, width=70, indent=34):
     lines = textwrap.wrap(text, width)
     for i in range(1, len(lines)):
-        lines[i] = (" " * 34) + lines[i]
+        lines[i] = (" " * indent) + lines[i]
+    return "\n".join(lines)
+
+def cropped(text, width=70, maxlines=5, indent=34):
+    lines = text.split("\n")
+    for i in range(0, len(lines)):
+        if len(lines[i]) > width - 3:
+            lines[i] = lines[i][:width - 3] + "..."
+        if i >= 1:
+            lines[i] = (" " * indent) + lines[i]
+    if len(lines) > maxlines - 1:
+        lines = lines[:maxlines - 1]
+        lines.append((" " * indent) + "...")
     return "\n".join(lines)
 
 def highlight(text):
@@ -82,7 +94,9 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
         catch_links(message.body)
         if message.is_paste():
             save_paste(message)
-        show(message, "%s: %s" % (user, highlight(wrapped(message.body))))
+            show(message, "%s: %s" % (user, cropped(message.body)))
+        else:
+            show(message, "%s: %s" % (user, highlight(wrapped(message.body))))
     elif message.is_upload():
         catch_links(message.upload["url"])
         show(message, "%s: %s uploaded file %s: %s" % (S["***"],
