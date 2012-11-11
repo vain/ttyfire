@@ -62,6 +62,7 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
     elif not hide_joinpart and message.is_kick():
         show(message, "%s: %s has been kicked" % (S["<--"], user))
     elif message.is_tweet():
+        catch_links(message.tweet["url"])
         show(message, "%s: %s tweeted '%s' - %s" % (user,
                                                      message.tweet["user"], 
                                                      message.tweet["tweet"],
@@ -72,6 +73,7 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
         if message.is_paste():
             save_paste(message)
     elif message.is_upload():
+        catch_links(message.upload["url"])
         show(message, "%s: %s uploaded file %s: %s" % (S["***"],
                                                        user,
                                                        message.upload["name"],
