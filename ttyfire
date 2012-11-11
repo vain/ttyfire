@@ -27,9 +27,10 @@ else
 	set status-fg white
 	set status-bg black
 	set pane-active-border-fg default
-	split-window -l 5 "ttyfire_pipefiller $escaped_pipe"
+	set history-limit 50000
 	unbind '\'
 	bind '\' "kill-session"
+	split-window -l 5 "ttyfire_pipefiller $escaped_pipe"
 	EOF
 
 	tmux new-session -s "$session" "campfire_room $escaped_pipe $escaped_room" \
