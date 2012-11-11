@@ -5,6 +5,7 @@ import os
 import sys
 import textwrap
 import re
+import datetime
 
 def show(message, processed):
     sys.stdout.write("\a")
@@ -155,8 +156,11 @@ if __name__ == "__main__":
     room = campfire.get_room_by_name(room_name)
     room.join()
 
-    for i in room.recent():
-        proc_message(i, hide_joinpart=True, hide_unknown=True)
+    for o in range(7, -1, -1):
+        when = datetime.date.today() - datetime.timedelta(o)
+        for i in room.transcript(for_date=when):
+            proc_message(i, hide_joinpart=True, hide_unknown=True)
+        print ""
 
     list_users(room)
 
