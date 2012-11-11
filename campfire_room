@@ -54,7 +54,11 @@ def save_paste(message):
     # going to be a collision.
     user = re.sub(r'[^a-z0-9]', "_", message.user.name.lower())
     stamp = message.get_data()["created_at"].strftime("%F--%H-%M-%S")
-    with open("/tmp/cf--%s--%s" % (user, stamp), "w") as fp:
+    filename = "/tmp/cf--%s--%s" % (user, stamp)
+
+    show(message, "%s: Saving this paste as %s:" % (S["***"], filename))
+
+    with open(filename, "w") as fp:
         fp.write(message.body.encode("UTF-8"))
 
 def proc_message(message, hide_joinpart=False, hide_unknown=False):
@@ -76,9 +80,9 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
                                                      message.tweet["url"]))
     elif message.is_text():
         catch_links(message.body)
-        show(message, "%s: %s" % (user, highlight(wrapped(message.body))))
         if message.is_paste():
             save_paste(message)
+        show(message, "%s: %s" % (user, highlight(wrapped(message.body))))
     elif message.is_upload():
         catch_links(message.upload["url"])
         show(message, "%s: %s uploaded file %s: %s" % (S["***"],
