@@ -118,8 +118,24 @@ def list_rooms(campfire):
     print "Rooms: %s" % ", ".join([i["name"] for i in campfire.get_rooms()])
     print ""
 
+def upload_progress(current, total):
+    print "Uploading %d out of %d (%-.1f%%)" % (current, total,
+                                                100 * (float(current)
+                                                       / float(total)))
+    print ""
+
+def upload_finished():
+    print "Upload finished."
+    print ""
+
+def upload_new(room, filename):
+    room.upload(filename,
+                progress_callback=upload_progress,
+                finished_callback=upload_finished,
+                error_callback=error).start()
+
 def error(e, room):
-    print "Stream for room \"%s\" stopped due to error: %s" % (room.name, e)
+    print "\"%s\" error: %s" % (room.name, e)
 
 C = {
      "reset":    "\033[0m",
@@ -192,6 +208,8 @@ if __name__ == "__main__":
                     list_users(room)
                 elif cmd == "/uploads":
                     list_uploads(room)
+                elif cmd.startswith("/send "):
+                    upload_new(room, cmd[6:])
                 elif cmd == "/rooms":
                     list_rooms(campfire)
                 else:
