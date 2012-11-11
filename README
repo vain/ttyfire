@@ -1,16 +1,20 @@
 Minimalistic client for 37signals' Campfire.
 
+
 Create a ~/.ttyfire:
 
 	yoursubdomain
 	your@login.exmpale
 	yourpassword
 
+
 Launch ttyfire:
 
 	./ttyfire "Name of the room"
 
-Best way to quit is to use "^A \". This key is bound to "kill-session".
+	Best way to quit is to use "^A \". This key is bound to
+	"kill-session".
+
 
 Dependencies:
 
@@ -20,6 +24,38 @@ Dependencies:
 	tmux
 	Your terminal should support colors
 
+
 TODOs:
 
-	Make the script pretty. It's a quick hack.
+	- Make the script pretty. It's a quick hack.
+	- I'll add missing features once I need them.
+
+
+How it works:
+
+	campfire_room $pipe_name $room_name
+
+	campfire_room uses pyfire to connect to Campfire. The script joins
+	exactly one room. campfire_room outputs anything directly to the
+	terminal -- however, it reads commands from a named pipe. Anything
+	you write to that pipe will be forwarded to the room, except for
+	some special commands like "/users" and "/uploads".
+
+
+	ttyfire_pipefiller $pipe_name
+
+	ttyfire_pipefiller is a simple read-write-loop that reads from stdin
+	and writes to the pipe.
+
+
+	ttyfire $room_name
+
+	The user frontend. It launches tmux and creates two panes. The upper
+	pane shows the output of campfire_room, the lower pane runs
+	ttyfire_pipefiller.
+
+	Due to the fact that campfire_room can only join one channel, you
+	need one terminal / tab per room.
+
+	If another instance of ttyfire is already running for this room,
+	then tmux will reattach to that session.
