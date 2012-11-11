@@ -21,8 +21,12 @@ else
 	set status-left-length 100
 	set status-left " -- #W -- "
 	rename-window "$room"
-	set window-status-current-fg black
 	set status-right ""
+	set window-status-current-fg black
+	set window-status-current-bg black
+	set status-fg white
+	set status-bg black
+	set pane-active-border-fg default
 	split-window -l 5 "ttyfire_pipefiller $escaped_pipe"
 	unbind '\'
 	bind '\' "kill-session"
