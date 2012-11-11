@@ -138,6 +138,13 @@ def upload_new(room, filename):
                 finished_callback=upload_finished,
                 error_callback=error).start()
 
+def paste_file(room, filename):
+    with open(filename, "r") as fp:
+        room.speak(fp.read())
+
+def paste_x(room):
+    room.speak(os.popen("xclip -o").read())
+
 def error(e, room):
     print "\"%s\" error: %s" % (room.name, e)
 
@@ -214,6 +221,10 @@ if __name__ == "__main__":
                     list_uploads(room)
                 elif cmd.startswith("/send "):
                     upload_new(room, cmd[6:])
+                elif cmd.startswith("/pastef "):
+                    paste_file(room, cmd[8:])
+                elif cmd == "/pastex":
+                    paste_x(room)
                 elif cmd == "/rooms":
                     list_rooms(campfire)
                 else:
