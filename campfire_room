@@ -7,8 +7,9 @@ import textwrap
 import re
 import datetime
 
-def show(message, processed):
-    sys.stdout.write("\a")
+def show(message, processed, bell=True):
+    if bell:
+        sys.stdout.write("\a")
     print "%s%s%s %s%s%s%s %s" % (
                         C["bold"], C["black"],
                         message.get_data()["created_at"].strftime("%F"),
@@ -81,13 +82,14 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
     shown = False
 
     if not hide_joinpart and message.is_joining():
-        show(message, "%s: %s" % (S["-->"], user))
+        show(message, "%s: %s" % (S["-->"], user), bell=False)
         shown = True
     elif not hide_joinpart and message.is_leaving():
-        show(message, "%s: %s" % (S["<--"], user))
+        show(message, "%s: %s" % (S["<--"], user), bell=False)
         shown = True
     elif not hide_joinpart and message.is_kick():
-        show(message, "%s: %s has been kicked" % (S["<--"], user))
+        show(message, "%s: %s has been kicked" % (S["<--"], user),
+             bell=False)
         shown = True
     elif message.is_tweet():
         catch_links(message.tweet["url"])
