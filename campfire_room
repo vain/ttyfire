@@ -94,9 +94,9 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
     elif message.is_tweet():
         catch_links(message.tweet["url"])
         show(message, "%s: %s tweeted '%s' - %s" % (user,
-                                                     message.tweet["user"], 
-                                                     message.tweet["tweet"],
-                                                     message.tweet["url"]))
+                                                    message.tweet["user"],
+                                                    message.tweet["tweet"],
+                                                    message.tweet["url"]))
         shown = True
     elif message.is_text():
         catch_links(message.body)
