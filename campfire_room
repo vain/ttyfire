@@ -40,18 +40,6 @@ def wrapped(text, width=70, indent=34):
         lines[i] = (" " * indent) + lines[i]
     return "\n".join(lines)
 
-def cropped(text, width=70, maxlines=5, indent=34):
-    lines = text.split("\n")
-    for i in range(0, len(lines)):
-        if len(lines[i]) > width - 3:
-            lines[i] = lines[i][:width - 3] + "..."
-        if i >= 1:
-            lines[i] = (" " * indent) + lines[i]
-    if len(lines) > maxlines - 1:
-        lines = lines[:maxlines - 1]
-        lines.append((" " * indent) + "...")
-    return "\n".join(lines)
-
 def highlight(text):
     for i in HIGHLIGHTS:
         pat = re.compile("(" + i + ")", re.IGNORECASE)
@@ -66,7 +54,7 @@ def catch_links(text):
         for i in re.findall(r'https?://[^ )]+', text, re.I):
             print >> fp, i
 
-def save_paste(message):
+def save_paste(fmt_user, message):
     # XXX: This does not create 100% unique name. When the same user
     # creates a paste in multiple rooms at the exact same time, there's
     # going to be a collision.
@@ -74,11 +62,14 @@ def save_paste(message):
     stamp = message_to_local(message).strftime("%F--%H-%M-%S")
     filename = "/tmp/cf--%s--%s" % (user, stamp)
 
-    show(message, "%s: Saving the following paste as %s" % (S["***"],
-                                                            filename))
+    show(message, "%s: %s pasted %s:" % (S["***"], fmt_user, filename))
 
     with open(filename, "w") as fp:
         fp.write(message.body.encode("UTF-8"))
+
+    print "---------------------------------"
+    print message.body
+    print "---------------------------------"
 
 def proc_message(message, hide_joinpart=False, hide_unknown=False):
     user = ""
@@ -106,8 +97,7 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
     elif message.is_text():
         catch_links(message.body)
         if message.is_paste():
-            save_paste(message)
-            show(message, "%s: %s" % (user, cropped(message.body)))
+            save_paste(user, message)
         else:
             show(message, "%s: %s" % (user, highlight(wrapped(message.body))))
         shown = True
