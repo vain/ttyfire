@@ -12,9 +12,7 @@ def message_to_local(message):
     when = message.get_data()["created_at"]
     return when - datetime.timedelta(seconds=time.timezone)
 
-def show(message, processed, bell=True):
-    if bell:
-        sys.stdout.write("\a")
+def show(message, processed):
     print "%s%s%s %s%s%s%s %s" % (
                         C["bold"], C["black"],
                         message_to_local(message).strftime("%F"),
@@ -41,10 +39,15 @@ def wrapped(text, width=70, indent=34):
     return "\n".join(lines)
 
 def highlight(text):
+    bell = False
     for i in HIGHLIGHTS:
         pat = re.compile("(" + i + ")", re.IGNORECASE)
+        if not bell and not pat.search(text) is None:
+            bell = True
         text = pat.sub(C["reversed"] + C["magenta"] + r"\1" + C["reset"],
                        text)
+    if bell:
+        sys.stdout.write("\a")
     return text
 
 def catch_links(text):
@@ -78,14 +81,13 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
     shown = False
 
     if not hide_joinpart and message.is_joining():
-        show(message, "%s: %s" % (S["-->"], user), bell=False)
+        show(message, "%s: %s" % (S["-->"], user))
         shown = True
     elif not hide_joinpart and message.is_leaving():
-        show(message, "%s: %s" % (S["<--"], user), bell=False)
+        show(message, "%s: %s" % (S["<--"], user))
         shown = True
     elif not hide_joinpart and message.is_kick():
-        show(message, "%s: %s has been kicked" % (S["<--"], user),
-             bell=False)
+        show(message, "%s: %s has been kicked" % (S["<--"], user))
         shown = True
     elif message.is_tweet():
         catch_links(message.tweet["url"])
