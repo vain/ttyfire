@@ -6,15 +6,20 @@ import sys
 import textwrap
 import re
 import datetime
+import time
+
+def message_to_local(message):
+    when = message.get_data()["created_at"]
+    return when - datetime.timedelta(seconds=time.timezone)
 
 def show(message, processed, bell=True):
     if bell:
         sys.stdout.write("\a")
     print "%s%s%s %s%s%s%s %s" % (
                         C["bold"], C["black"],
-                        message.get_data()["created_at"].strftime("%F"),
+                        message_to_local(message).strftime("%F"),
                         C["reset"], C["bold"],
-                        message.get_data()["created_at"].strftime("%T"),
+                        message_to_local(message).strftime("%T"),
                         C["reset"],
                         processed)
 
@@ -66,7 +71,7 @@ def save_paste(message):
     # creates a paste in multiple rooms at the exact same time, there's
     # going to be a collision.
     user = re.sub(r'[^a-z0-9]', "_", message.user.name.lower())
-    stamp = message.get_data()["created_at"].strftime("%F--%H-%M-%S")
+    stamp = message_to_local(message).strftime("%F--%H-%M-%S")
     filename = "/tmp/cf--%s--%s" % (user, stamp)
 
     show(message, "%s: Saving the following paste as %s" % (S["***"],
