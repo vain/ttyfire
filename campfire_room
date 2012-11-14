@@ -65,7 +65,7 @@ def save_paste(fmt_user, message):
     stamp = message_to_local(message).strftime("%F--%H-%M-%S")
     filename = "/tmp/cf--%s--%s" % (user, stamp)
 
-    show(message, "%s: %s pasted %s:" % (S["***"], fmt_user, filename))
+    show(message, "%s: %s pasted %s" % (S["***"], fmt_user, filename))
 
     with open(filename, "w") as fp:
         fp.write(message.body.encode("UTF-8"))
