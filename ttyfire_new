@@ -8,8 +8,6 @@ tmp=$(mktemp -d)
 
 mkfifo "$tmp/in"
 
-printf -v escaped_pipe '%q' "$tmp/in"
-
 tmux set status-left-length 100
 tmux set status-left " -- Campfire -- "
 tmux rename-window "$room"
@@ -20,7 +18,7 @@ tmux set status-fg white
 tmux set status-bg black
 tmux set pane-active-border-fg default
 tmux set history-limit 50000
-tmux split-window -l 5 "ttyfire_pipefiller $escaped_pipe"
+tmux split-window -l 5 "ttyfire_pipefiller $tmp/in"
 
 clear
 
