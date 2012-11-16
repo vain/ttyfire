@@ -8,17 +8,19 @@ tmp=$(mktemp -d)
 
 mkfifo "$tmp/in"
 
-tmux set status-left-length 100
-tmux set status-left " -- Campfire -- "
-tmux rename-window "$room"
-tmux set status-right ""
-tmux set window-status-current-fg yellow
-tmux set window-status-current-bg black
-tmux set status-fg white
-tmux set status-bg black
-tmux set pane-active-border-fg default
-tmux set history-limit 50000
-tmux split-window -l 5 "ttyfire_pipefiller $tmp/in"
+(
+	tmux set status-left-length 100
+	tmux set status-left " -- Campfire -- "
+	tmux rename-window "$room"
+	tmux set status-right ""
+	tmux set window-status-current-fg yellow
+	tmux set window-status-current-bg black
+	tmux set status-fg white
+	tmux set status-bg black
+	tmux set pane-active-border-fg default
+	tmux set history-limit 50000
+	tmux split-window -l 5 "ttyfire_pipefiller $tmp/in"
+) >/dev/null
 
 clear
 
