@@ -37,6 +37,24 @@ TODOs:
 
 How it works:
 
+	ttyfire
+
+	Launch a new tmux session for campfire or attach to an existing one.
+	If there's no session yet, ttyfire will automatically join all
+	channels defined in ~/.ttyfire -- the first four lines of that file
+	are settings, all other lines contain channel names.
+
+
+	ttyfire_new $room
+
+	You have to create a new tmux window and launch another instance of
+	ttyfire_new to join an additional channel.
+
+	ttyfire_new must be run inside of tmux and creates two panes. The
+	upper pane shows the output of campfire_room, the lower pane runs
+	ttyfire_pipefiller.
+
+
 	campfire_room $pipe_name $room_name
 
 	campfire_room uses pyfire to connect to Campfire. The script joins
@@ -50,21 +68,3 @@ How it works:
 
 	ttyfire_pipefiller is a simple read-write-loop that reads from stdin
 	and writes to the pipe.
-
-
-	ttyfire
-
-	Launch a new tmux session for campfire or attach to an existing one.
-	If there's no session yet, ttyfire will automatically join all
-	channels defined in ~/.ttyfire -- the first four lines of that file
-	are settings, all other lines contain channel names.
-
-
-	ttyfire_new $room
-
-	The user frontend. It must be run inside of tmux and creates two
-	panes. The upper pane shows the output of campfire_room, the lower
-	pane runs ttyfire_pipefiller.
-
-	Create a new tmux window and launch another instance of ttyfire_new
-	to join an additional channel.
