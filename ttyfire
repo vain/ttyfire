@@ -8,7 +8,13 @@ then
 else
 	d=/tmp/ttyfire-dirty-startup
 	readarray -ts 4 channels < ~/.ttyfire
-	echo "tmux set renumber-windows on" > "$d"
+	(
+		echo "tmux set renumber-windows on"
+		echo "tmux unbind 'F1'"
+		echo "tmux unbind 'F12'"
+		echo "tmux bind 'F1' kill-session"
+		echo "tmux bind 'F12' kill-window"
+	) > "$d"
 	for i in "${channels[@]}"
 	do
 		echo "tmux new-window \"ttyfire_new \\\"$i\\\"\""

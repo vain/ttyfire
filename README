@@ -12,14 +12,6 @@ Create a ~/.ttyfire:
 	Yet another room!
 
 
-Launch ttyfire:
-
-	./ttyfire "Name of the room"
-
-	Best way to quit is to use "^A \". This key is bound to
-	"kill-session".
-
-
 Dependencies:
 
 	Python 2
@@ -35,7 +27,7 @@ TODOs:
 	- I'll add missing features once I need them.
 
 
-How it works:
+"WTF?"
 
 	ttyfire
 
@@ -54,6 +46,10 @@ How it works:
 	upper pane shows the output of campfire_room, the lower pane runs
 	ttyfire_pipefiller.
 
+	ttyfire_new binds "kill-window" on "^B F12" (or "^A F12" if you're
+	using GNU screen bindings). This is the suggested way to leave a
+	room. To leave all rooms, use "^B F1" which is "kill-session".
+
 
 	campfire_room $pipe_name $room_name
 
@@ -63,8 +59,19 @@ How it works:
 	you write to that pipe will be forwarded to the room, except for
 	some special commands like "/users" and "/uploads".
 
+	campfire_room rings the terminal bell on highlights. There is no
+	support for libnotify or similar systems. Thus, you might want to
+	"teach" your window manager and terminal to react probperly on
+	terminal bells.
+
 
 	ttyfire_pipefiller $pipe_name
 
 	ttyfire_pipefiller is a simple read-write-loop that reads from stdin
 	and writes to the pipe.
+
+
+tl;dr
+
+	- Create ~/.ttyfire.
+	- Launch "ttyfire" in a terminal.

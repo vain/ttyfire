@@ -20,8 +20,6 @@ tmux set status-fg white
 tmux set status-bg black
 tmux set pane-active-border-fg default
 tmux set history-limit 50000
-tmux unbind '\'
-tmux bind '\' kill-window
 tmux split-window -l 5 "ttyfire_pipefiller $escaped_pipe"
 
 clear
