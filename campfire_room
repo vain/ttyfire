@@ -170,6 +170,14 @@ def paste_file(room, filename):
 def paste_x(room):
     room.speak(os.popen("xclip -o").read())
 
+def leave(stream, room):
+    stream.stop().join()
+    room.leave()
+    print ""
+    print "Room left. You may close this window now."
+    while not time.sleep(3600):
+        pass
+
 def error(e, room):
     print "\"%s\" error: %s" % (room.name, e)
 
@@ -181,7 +189,7 @@ def show_help():
     print "/send $f    Upload a file."
     print "/pastef $f  Paste a file."
     print "/pastex     Paste from X11 clipboard."
-    print "/quit       Don't use this. :-)"
+    print "/leave      Leave the room."
     print ""
 
 
@@ -251,10 +259,8 @@ if __name__ == "__main__":
         with open(pipe_name, "r") as pipe:
             lines = [i.strip() for i in pipe.readlines()]
             for cmd in lines:
-                if cmd == "/quit":
-                    stream.stop().join()
-                    room.leave()
-                    sys.exit(0)
+                if cmd == "/leave":
+                    leave(stream, room)
                 elif cmd == "/users":
                     list_users(room)
                 elif cmd == "/uploads":
