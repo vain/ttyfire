@@ -6,5 +6,14 @@ if tmux has-session -t "$session" 2>/dev/null
 then
 	tmux attach-session -t "$session"
 else
-	tmux new-session -s "$session"
+	d=/tmp/ttyfire-dirty-startup
+	readarray -ts 4 channels < ~/.ttyfire
+	echo "tmux set renumber-windows on" > "$d"
+	for i in "${channels[@]}"
+	do
+		echo "tmux new-window \"ttyfire_new \\\"$i\\\"\""
+		echo 'sleep 0.5'
+	done >> "$d"
+	chmod u+x "$d"
+	tmux new-session -s "$session" "$d"
 fi

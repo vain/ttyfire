@@ -7,6 +7,9 @@ Create a ~/.ttyfire:
 	your@login.exmpale
 	yourpassword
 	highlight1;another highlight;highlight3
+	Room 1
+	Another Room
+	Yet another room!
 
 
 Launch ttyfire:
@@ -52,11 +55,14 @@ How it works:
 	ttyfire
 
 	Launch a new tmux session for campfire or attach to an existing one.
+	If there's no session yet, ttyfire will automatically join all
+	channels defined in ~/.ttyfire -- the first four lines of that file
+	are settings, all other lines contain channel names.
 
 
 	ttyfire_new $room
 
-	The user frontend. It must be run instide of tmux and creates two
+	The user frontend. It must be run inside of tmux and creates two
 	panes. The upper pane shows the output of campfire_room, the lower
 	pane runs ttyfire_pipefiller.
 
