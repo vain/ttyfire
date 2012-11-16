@@ -1,38 +1,10 @@
 #!/bin/bash
 
-[[ -z "$1" ]] && { echo "Usage: $(basename "$0") <room>" >&2; exit 1; }
+session=ttyfire
 
-room=$1
-session=${room,,}
-session="cf_${session//[^a-z0-9]/}"
-
-if tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -q "^$session$"
+if tmux has-session -t "$session" 2>/dev/null
 then
 	tmux attach-session -t "$session"
 else
-	tmp=$(mktemp -d)
-
-	mkfifo "$tmp/in"
-
-	printf -v escaped_room '%q' "$room"
-	printf -v escaped_pipe '%q' "$tmp/in"
-
-	cat >"$tmp/tmux" <<-EOF
-	set status-left-length 100
-	set status-left " -- #W -- "
-	rename-window "$room"
-	set status-right ""
-	set window-status-current-fg black
-	set window-status-current-bg black
-	set status-fg white
-	set status-bg black
-	set pane-active-border-fg default
-	set history-limit 50000
-	unbind '\'
-	bind '\' "kill-session"
-	split-window -l 5 "ttyfire_pipefiller $escaped_pipe"
-	EOF
-
-	tmux new-session -s "$session" "campfire_room $escaped_pipe $escaped_room" \
-		\; source "$tmp/tmux"
+	tmux new-session -s "$session"
 fi

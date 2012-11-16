@@ -49,14 +49,16 @@ How it works:
 	and writes to the pipe.
 
 
-	ttyfire $room_name
+	ttyfire
 
-	The user frontend. It launches tmux and creates two panes. The upper
-	pane shows the output of campfire_room, the lower pane runs
-	ttyfire_pipefiller.
+	Launch a new tmux session for campfire or attach to an existing one.
 
-	Due to the fact that campfire_room can only join one channel, you
-	need one terminal / tab per room.
 
-	If another instance of ttyfire is already running for this room,
-	then tmux will reattach to that session.
+	ttyfire_new $room
+
+	The user frontend. It must be run instide of tmux and creates two
+	panes. The upper pane shows the output of campfire_room, the lower
+	pane runs ttyfire_pipefiller.
+
+	Create a new tmux window and launch another instance of ttyfire_new
+	to join an additional channel.

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+[[ -z "$1" ]] && { echo "Usage: $(basename "$0") <room>" >&2; exit 1; }
+[[ -z "$TMUX" ]] && { echo "Must be run inside of tmux." >&2; exit 1; }
+
+room=$1
+tmp=$(mktemp -d)
+
+mkfifo "$tmp/in"
+
+printf -v escaped_pipe '%q' "$tmp/in"
+
+tmux set -g status-left-length 100
+tmux set -g status-left " -- Campfire -- "
+tmux rename-window "$room"
+tmux set -g status-right ""
+tmux set -g window-status-current-fg yellow
+tmux set -g window-status-current-bg black
+tmux set -g status-fg white
+tmux set -g status-bg black
+tmux set -g pane-active-border-fg default
+tmux set -g history-limit 50000
+tmux unbind '\'
+tmux bind '\' kill-window
+tmux split-window -l 5 "ttyfire_pipefiller $escaped_pipe"
+
+clear
+
+campfire_room "$tmp/in" "$room"
