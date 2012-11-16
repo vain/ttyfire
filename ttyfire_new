@@ -9,6 +9,7 @@ tmp=$(mktemp -d)
 mkfifo "$tmp/in"
 
 (
+	tmux set status on
 	tmux set status-left " -- Campfire -- "
 	tmux rename-window "$room"
 	tmux set status-right ""
