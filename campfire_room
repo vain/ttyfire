@@ -44,7 +44,7 @@ def highlight(text):
         pat = re.compile("(" + i + ")", re.IGNORECASE)
         if not bell and not pat.search(text) is None:
             bell = True
-        text = pat.sub(C["reversed"] + C["magenta"] + r"\1" + C["reset"],
+        text = pat.sub(C["reversed"] + C["yellow"] + r"\1" + C["reset"],
                        text)
     if bell:
         sys.stdout.write("\a")
