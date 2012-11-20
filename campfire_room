@@ -87,7 +87,7 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
         show(message, "%s: %s" % (S["<--"], user))
         shown = True
     elif not hide_joinpart and message.is_kick():
-        show(message, "%s: %s has been kicked" % (S["<--"], user))
+        show(message, "%s: %s timed out" % (S["<--"], user))
         shown = True
     elif message.is_tweet():
         catch_links(message.tweet["url"])
