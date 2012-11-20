@@ -3,8 +3,8 @@ Minimalistic client for 37signals' Campfire.
 
 Create a ~/.ttyfire:
 
-	yoursubdomain
-	your@login.exmpale
+	your-companys-subdomain
+	your.login.e-mail@example.invalid
 	yourpassword
 	highlight1;another highlight;highlight3
 	Room 1
@@ -15,7 +15,7 @@ Create a ~/.ttyfire:
 Dependencies:
 
 	Python 2
-	pyfire https://github.com/mariano/pyfire
+	pyfire: https://github.com/mariano/pyfire
 	GNU bash with readline support
 	tmux
 	Your terminal should support colors
@@ -24,6 +24,7 @@ Dependencies:
 TODOs:
 
 	- Make the script pretty. It's a quick hack.
+	- Manpages.
 	- I'll add missing features once I need them.
 
 
@@ -39,8 +40,8 @@ TODOs:
 
 	ttyfire_new $room
 
-	You have to create a new tmux window and launch another instance of
-	ttyfire_new to join an additional channel.
+	You have to create a new window inside a tmux session and launch
+	another instance of ttyfire_new to join an additional channel.
 
 	ttyfire_new must be run inside of tmux and creates two panes. The
 	upper pane shows the output of campfire_room, the lower pane runs
@@ -61,7 +62,7 @@ TODOs:
 
 	campfire_room rings the terminal bell on highlights. There is no
 	support for libnotify or similar systems. Thus, you might want to
-	"teach" your window manager and terminal to react probperly on
+	"teach" your window manager and terminal to react properly on
 	terminal bells.
 
 
