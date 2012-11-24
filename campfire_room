@@ -149,11 +149,12 @@ def name_completion(user_input):
 
     if len(names) == 1 and names[0] == "ALL":
         for s in current_users:
-            out += "@" + s + ", "
+            if s != own_username:
+                out += "@" + s + ", "
     else:
         for n in names:
             for s in current_users:
-                if s.lower().startswith(n.lower()):
+                if s.lower().startswith(n.lower()) and s != own_username:
                     out += "@" + s + ", "
     out += message
     return out
@@ -277,6 +278,7 @@ if __name__ == "__main__":
             print ""
 
     current_users = list_users(room)
+    own_username = campfire._user.get_data()["name"]
 
     stream = room.get_stream(error_callback=error)
     stream.attach(proc_message).start()
