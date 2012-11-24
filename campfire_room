@@ -83,12 +83,15 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
     if not hide_joinpart and message.is_joining():
         show(message, "%s: %s" % (S["-->"], user))
         shown = True
+        current_users.append(message.user.name)
     elif not hide_joinpart and message.is_leaving():
         show(message, "%s: %s" % (S["<--"], user))
         shown = True
+        current_users.remove(message.user.name)
     elif not hide_joinpart and message.is_kick():
         show(message, "%s: %s timed out" % (S["<--"], user))
         shown = True
+        current_users.remove(message.user.name)
     elif message.is_tweet():
         catch_links(message.tweet["url"])
         show(message, "%s: %s tweeted '%s' - %s" % (user,
@@ -127,10 +130,33 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
     return shown
 
 def list_users(room):
+    users = [i["name"] for i in room.get_users()]
     print ""
-    print "Users in room: %s" % ", ".join([colored_name(trim_len(i["name"]))
-                                           for i in room.get_users()])
+    print "Users in room: %s" % ", ".join([colored_name(trim_len(i))
+                                           for i in users])
     print ""
+    return users
+
+def name_completion(user_input):
+    m = re.match(r'^@([^:]+): (.*)', user_input)
+    if m is None:
+        return user_input
+
+    names = m.groups()[0].split(",")
+    message = m.groups()[1]
+
+    out = ""
+
+    if len(names) == 1 and names[0] == "ALL":
+        for s in current_users:
+            out += "@" + s + ", "
+    else:
+        for n in names:
+            for s in current_users:
+                if s.lower().startswith(n.lower()):
+                    out += "@" + s + ", "
+    out += message
+    return out
 
 def list_uploads(room):
     print ""
@@ -250,7 +276,7 @@ if __name__ == "__main__":
         if messages_shown > 0:
             print ""
 
-    list_users(room)
+    current_users = list_users(room)
 
     stream = room.get_stream(error_callback=error)
     stream.attach(proc_message).start()
@@ -276,6 +302,6 @@ if __name__ == "__main__":
                 elif cmd.startswith("/"):
                     show_help()
                 else:
-                    room.speak(cmd)
+                    room.speak(name_completion(cmd))
 
 # vim: set ts=4 sw=4 et sta :

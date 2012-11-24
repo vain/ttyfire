@@ -65,6 +65,14 @@ TODOs:
 	"teach" your window manager and terminal to react properly on
 	terminal bells.
 
+	To help you highlight other people, you can start a message with
+	"@mar,cas,and: hey, listen to me!" "mar", "cas" and "and" will be
+	replaced with their full user names. Thus, the actual message might
+	look like this: "@Marc Alaimo, @Casey Biggs, @Andrew Robinson: hey,
+	listen to me!" To highlight all users, you can use "@ALL: ...".
+	These shortcuts only apply to people who are currently in the
+	channel.
+
 
 	ttyfire_pipefiller $pipe_name
 
