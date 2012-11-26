@@ -285,7 +285,7 @@ if __name__ == "__main__":
 
     while True:
         with open(pipe_name, "r") as pipe:
-            lines = [i.strip() for i in pipe.readlines()]
+            lines = [i.decode("UTF-8").strip() for i in pipe.readlines()]
             for cmd in lines:
                 if cmd == "/leave":
                     leave(stream, room)
