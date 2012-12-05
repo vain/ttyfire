@@ -129,11 +129,14 @@ def proc_message(message, hide_joinpart=False, hide_unknown=False):
 
     return shown
 
-def list_users(room):
+def list_users(room, full=False):
     users = [i["name"] for i in room.get_users()]
     print ""
-    print "Users in room: %s" % ", ".join([colored_name(trim_len(i))
-                                           for i in users])
+    if full:
+        print "Users in room: %s" % ", ".join(users)
+    else:
+        print "Users in room: %s" % ", ".join([colored_name(trim_len(i))
+                                               for i in users])
     print ""
     return users
 
@@ -210,13 +213,14 @@ def error(e, room):
 
 def show_help():
     print ""
-    print "/users      List users in the current room."
-    print "/rooms      List all rooms."
-    print "/uploads    List uploads in the current room."
-    print "/send $f    Upload a file."
-    print "/pastef $f  Paste a file."
-    print "/pastex     Paste from X11 clipboard."
-    print "/leave      Leave the room."
+    print "/users       List users in the current room."
+    print "/users_full  Likewise but don't shorten names."
+    print "/rooms       List all rooms."
+    print "/uploads     List uploads in the current room."
+    print "/send $f     Upload a file."
+    print "/pastef $f   Paste a file."
+    print "/pastex      Paste from X11 clipboard."
+    print "/leave       Leave the room."
     print ""
 
 
@@ -291,6 +295,8 @@ if __name__ == "__main__":
                     leave(stream, room)
                 elif cmd == "/users":
                     list_users(room)
+                elif cmd == "/users_full":
+                    list_users(room, full=True)
                 elif cmd == "/uploads":
                     list_uploads(room)
                 elif cmd.startswith("/send "):
