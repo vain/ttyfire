@@ -58,14 +58,11 @@ def catch_links(text):
             print >> fp, i
 
 def save_paste(fmt_user, message):
-    # XXX: This does not create 100% unique name. When the same user
-    # creates a paste in multiple rooms at the exact same time, there's
-    # going to be a collision.
-    user = re.sub(r'[^a-z0-9]', "_", message.user.name.lower())
-    stamp = message_to_local(message).strftime("%F--%H-%M-%S")
     if not os.path.exists("/tmp/campfire"):
         os.mkdir("/tmp/campfire")
-    filename = "/tmp/campfire/%s--%s" % (user, stamp)
+
+    user = re.sub(r'[^a-z0-9]', "_", message.user.name.lower())
+    filename = "/tmp/campfire/%s--%s" % (user, message.get_data()["id"])
 
     show(message, "%s: %s pasted %s" % (S["***"], fmt_user, filename))
 
