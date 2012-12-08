@@ -63,7 +63,9 @@ def save_paste(fmt_user, message):
     # going to be a collision.
     user = re.sub(r'[^a-z0-9]', "_", message.user.name.lower())
     stamp = message_to_local(message).strftime("%F--%H-%M-%S")
-    filename = "/tmp/cf--%s--%s" % (user, stamp)
+    if not os.path.exists("/tmp/campfire"):
+        os.mkdir("/tmp/campfire")
+    filename = "/tmp/campfire/%s--%s" % (user, stamp)
 
     show(message, "%s: %s pasted %s" % (S["***"], fmt_user, filename))
 
