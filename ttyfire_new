@@ -20,7 +20,7 @@ mkdir -p "$base"
 	tmux set status-bg black
 	tmux set pane-active-border-fg default
 	tmux set history-limit 50000
-	tmux split-window -l 5 "ttyfire_pipefiller $base/in"
+	tmux split-window -l 5 "ttyfire_pipefiller \"$base/in\""
 ) >/dev/null
 
 clear
