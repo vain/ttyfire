@@ -1,0 +1,8 @@
+#!/bin/bash
+
+killall ttyfire_pipefiller
+
+for i in /tmp/campfire/rooms/*
+do
+	echo '/leave' >"$i/in"
+done
