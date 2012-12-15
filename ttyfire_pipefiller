@@ -9,5 +9,6 @@ do
 	then
 		history -s "$REPLY"
 		echo "$REPLY" >>"$pipe_name"
+		[[ "$REPLY" == "/leave" ]] && exit
 	fi
 done
