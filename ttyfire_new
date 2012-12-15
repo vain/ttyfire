@@ -7,7 +7,6 @@ room=$1
 base="/tmp/campfire/rooms/$room"
 
 mkdir -p "$base"
-[[ -p "$base/in" ]] || mkfifo "$base/in"
 
 (
 	tmux set status on

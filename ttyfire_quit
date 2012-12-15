@@ -4,5 +4,6 @@ killall ttyfire_pipefiller
 
 for i in /tmp/campfire/rooms/*
 do
+	[[ -p "$i/in" ]] || continue
 	echo '/leave' >"$i/in"
 done
