@@ -49,7 +49,7 @@ TODOs:
 
 	ttyfire_new binds "kill-window" on "^B F12" (or "^A F12" if you're
 	using GNU screen bindings). This is the suggested way to leave a
-	room. To leave all rooms, use "^B F1" which is "kill-session".
+	room. To leave all rooms, use "^B F1" which runs "ttyfire_quit".
 
 
 	campfire_room $pipe_name $room_name
@@ -78,6 +78,20 @@ TODOs:
 
 	ttyfire_pipefiller is a simple read-write-loop that reads from stdin
 	and writes to the pipe.
+
+
+	ttyfire_quit
+
+	Kills all instances of "ttyfire_pipefiller" and sends a "/leave" to
+	all open channels.
+
+
+	ttyfire_resizer
+
+	Periodically resizes all input panes to a fixed height. This may
+	come in handy when you use a tiling window manager: If the terminal
+	window gets resized, the tmux layout may be fscked up.
+	ttyfire_resizer fixes this.
 
 
 tl;dr
