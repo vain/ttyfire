@@ -1,0 +1,31 @@
+#!/bin/bash
+
+session=$1
+targetheight=$2
+
+while sleep 5
+do
+	tmux has-session -t "$session" 2>/dev/null || exit
+
+	for i in $(tmux list-windows -t "$session" -F '#{window_index}')
+	do
+		tmux list-panes -t "$session":$i -F '#{pane_index} #{pane_height}' |
+		while read index height
+		do
+			(( index == 1 )) || continue
+
+			# Resize to the exact height. And only do this if it's not
+			# already correct. Avoids flickering.
+			diff=$((height - targetheight))
+			if (( diff == 0 ))
+			then
+				continue
+			elif (( diff < 0 ))
+			then
+				tmux resize-pane -t "$session":$i.1 -U $((-diff)) 2>/dev/null
+			else
+				tmux resize-pane -t "$session":$i.1 -D $diff 2>/dev/null
+			fi
+		done
+	done
+done

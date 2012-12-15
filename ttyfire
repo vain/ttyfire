@@ -17,5 +17,6 @@ then
 		echo 'sleep 0.5'
 	done >> "$d"
 	chmod u+x "$d"
+	ttyfire_resizer "$session" 5 &
 	tmux new-session -s "$session" "$d"
 fi
