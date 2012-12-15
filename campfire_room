@@ -22,7 +22,7 @@ def show(message, processed):
                         processed)
 
 def colored_name(user):
-    modhash = hash(user) % len(NICK_COLORS)
+    modhash = sum([ord(i) for i in list(user)]) % len(NICK_COLORS)
     return "%s%s%s" % (C[NICK_COLORS[modhash]], user, C["reset"])
 
 def trim_len(text, maxlen=12):
