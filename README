@@ -47,9 +47,9 @@ TODOs:
 	upper pane shows the output of campfire_room, the lower pane runs
 	ttyfire_pipefiller.
 
-	ttyfire_new binds "kill-window" on "^B F12" (or "^A F12" if you're
-	using GNU screen bindings). This is the suggested way to leave a
-	room. To leave all rooms, use "^B F1" which runs "ttyfire_quit".
+	ttyfire_new binds "ttyfire_quit" on "^B F1" (or "^A F1" if you're
+	using GNU screen bindings). This is the suggested way to quit the
+	whole application. To leave a single room, just issue "/leave".
 
 
 	campfire_room $pipe_name $room_name

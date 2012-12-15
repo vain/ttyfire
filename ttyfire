@@ -9,7 +9,6 @@ then
 	(
 		echo "tmux set renumber-windows on"
 		echo "tmux bind 'F1' run-shell ttyfire_quit"
-		echo "tmux bind 'F12' kill-window"
 	) > "$d"
 	for i in "${channels[@]}"
 	do
