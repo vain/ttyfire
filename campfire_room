@@ -204,8 +204,7 @@ def leave(stream, room):
     room.leave()
     print ""
     print "Room left. You may close this window now."
-    while not time.sleep(3600):
-        pass
+    print ""
 
 def error(e, room):
     print "\"%s\" error: %s" % (room.name, e)
@@ -292,6 +291,7 @@ if __name__ == "__main__":
             for cmd in lines:
                 if cmd == "/leave":
                     leave(stream, room)
+                    sys.exit(0)
                 elif cmd == "/users":
                     list_users(room)
                 elif cmd == "/users_full":
