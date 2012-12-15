@@ -4,9 +4,10 @@
 [[ -z "$TMUX" ]] && { echo "Must be run inside of tmux." >&2; exit 1; }
 
 room=$1
-tmp=$(mktemp -d)
+base="/tmp/campfire/rooms/$room"
 
-mkfifo "$tmp/in"
+mkdir -p "$base"
+[[ -p "$base/in" ]] || mkfifo "$base/in"
 
 (
 	tmux set status on
@@ -19,9 +20,9 @@ mkfifo "$tmp/in"
 	tmux set status-bg black
 	tmux set pane-active-border-fg default
 	tmux set history-limit 50000
-	tmux split-window -l 5 "ttyfire_pipefiller $tmp/in"
+	tmux split-window -l 5 "ttyfire_pipefiller $base/in"
 ) >/dev/null
 
 clear
 
-campfire_room "$tmp/in" "$room"
+campfire_room "$base/in" "$room"
