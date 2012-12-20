@@ -187,13 +187,13 @@ def upload_finished():
     print ""
 
 def upload_new(room, filename):
-    room.upload(filename,
+    room.upload(os.path.expanduser(filename),
                 progress_callback=upload_progress,
                 finished_callback=upload_finished,
                 error_callback=error).start()
 
 def paste_file(room, filename):
-    with open(filename, "r") as fp:
+    with open(os.path.expanduser(filename), "r") as fp:
         room.speak(fp.read())
 
 def paste_x(room):
