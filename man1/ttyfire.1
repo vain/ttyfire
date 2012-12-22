@@ -1,0 +1,182 @@
+.TH TTYFIRE 1 "December 2012" "ttyfire" "Quick and dirty Campfire client"
+.SH NAME
+ttyfire \- Quick and fscking dirty Campfire client
+.SH SYNOPSIS
+\fBttyfire\fP
+.br
+\fBttyfire_new\fP \fIroom\fP
+.br
+\fBttyfire_quit\fP
+.SH DESCRIPTION
+\fBttyfire\fP is a Campfire client for your TTY. It comprises several
+scripts. The one called \fBttyfire\fP is the frontend to the other
+scripts. This man page also gives you an overview of what the other
+tools do.
+.P
+\fBttyfire\fP uses \fBtmux\fP as a \(lqgraphical user interface\(rq.
+.P
+These scripts are not pretty. They're quick hacks but they do the job.
+.P
+Note: It's neither possible to launch several instances of \fBttyfire\fP
+nor to connect to different accounts.
+.SH OPTIONS
+There are no command line options for \fBttyfire\fP. When you start it,
+it reads your configuration file and launches the appropriate tools to
+connect to Campfire. In particular, it starts a new \fBtmux\fP session
+named \(lqttyfire\(rq or attaches to an already existing one.
+.P
+The other tools do have options, though. See below.
+.SH CONFIGURATION
+\fI~/.ttyfire\fP is read when \fBttyfire\fP starts. It must look like
+this:
+.P
+\f(CW
+.nf
+	your-companys-subdomain
+	your.login.e-mail@example.invalid
+	yourpassword
+	highlight1;another highlight;highlight3
+	Room 1
+	Another Room
+	Yet another room!
+.fi
+\fP
+.P
+To be more precise:
+.TP
+Line 1:
+The subdomain your company registered at 37signals.
+.TP
+Line 2:
+Your login name, usually your e-mail address.
+.TP
+Line 3:
+Your password. Yes, \fBttyfire\fP does not use the API token. That's
+because the underlying library (\fBpython2-pyfire\fP) requires you to
+specify the password.
+.TP
+Line 4:
+A list of strings, separated by semicolons, that \fBttyfire\fP will
+highlight. Those strings will be visually marked. Additionally, when
+such a string is encountered, the terminal bell will be ringing. You may
+want to configure your terminal emulator to activate an urgency hint on
+its window (e.g., see \(lqbellIsUrgent\(rq for \fBxterm\fP(1)).
+.TP
+Lines 5 and following:
+Rooms to join when \fBttyfire\fP starts.
+.SH "NICKNAME COMPLETION"
+To help you highlight other people, you can start a message with
+\fB@parts,of,some,nicks:\fP or just \fB@nick:\fP. Like this:
+.P
+\f(CW
+.nf
+	@mar,cas,and: hey, listen to me!
+.fi
+\fP
+.P
+\(lqmar\(rq, \(lqcas\(rq and
+\(lqand\(rq will be replaced with their full user names. Thus, the
+actual message might look like this:
+.P
+\f(CW
+.nf
+	@Marc Alaimo, @Casey Biggs, @Andrew Robinson: hey, listen to me!
+.fi
+\fP
+.P
+To highlight all users, you can use \fB@ALL: ...\fP.  These shortcuts
+only apply to people who are currently in the channel.
+.SH "CATCHING LINKS AND PASTES"
+As \fBttyfire\fP wraps all text to a fixed width, it may be difficult to
+click on or select URL links in your terminal. To solve this problem,
+\fBttyfire\fP appends each URL link to a file (\fI/tmp/links.log\fP).
+You can then use something like \fBurlview\fP(1) to comfortably access
+this file.
+.P
+The same applies to pastes. \fBttyfire\fP stores each paste in
+\fI/tmp/campfire\fP and announces the path to the corresponding file.
+.SH "FRONTEND TOOLS"
+As mentioned earlier, \fBttyfire\fP comprises several scripts. There's
+two categories: Frontend tools and plumbing tools. The frontend tools
+are the ones that you start manually; the plumbing tools are run for
+you by \fBttyfire\fP or the other scripts.
+.TP
+\fBttyfire\fP
+The main part of the frontend. Run this script to create a new
+\fBtmux\fP session or attach to an existing one.
+.TP
+\fBttyfire_new\fP \fIroom\fP
+You have to create a new window inside of a \fBtmux\fP session and
+launch another instance of \fBttyfire_new\fP to join an additional
+channel.
+
+\fBttyfire_new\fP must be run inside of \fBtmux\fP and creates two
+panes. The upper pane shows the output of \fBcampfire_room\fP, the lower
+pane runs \fBttyfire_pipefiller\fP.
+.TP
+\fBttyfire_quit\fP
+Kills all instances of \fBttyfire_pipefiller\fP and sends a
+\(lq/leave\(rq to all open channels. This script can be run from
+everywhere, there's no need to run it inside the \fBtmux\fP session.
+
+\fBttyfire_new\fP binds \fBttyfire_quit\fP on \(lq^B F1\(rq (or \(lq^A
+F1\(rq if you're using GNU \fBscreen\fP bindings). This is the suggested
+way to quit the whole application. To leave a single room, just issue
+\(lq/leave\(rq.
+
+\fBNote:\fP If you do not properly leave a room, you might still be
+listed as \(lqonline\(rq by Campfire. Timeouts don't appear to work
+correctly (this also applies to other clients such as \fBcamper_van\fP).
+This can be very confusing for other people.
+.SH "PLUMBING TOOLS"
+These are the scripts which are run behind the scenes. You don't want to
+run these tools manually.
+.TP
+\fBttyfire_pipefiller\fP \fIpipe_name\fP
+\fBttyfire_pipefiller\fP is a simple read-write-loop that reads from
+stdin and writes to the pipe. It acts as the \(lqcommand line\(rq of
+\fBttyfire\fP.
+.TP
+\fBttyfire_resizer\fP \fIsession\fP \fIinterval\fP
+Periodically resizes all input panes to a fixed height. This may
+come in handy when you use a tiling window manager: If the terminal
+window gets resized, the \fBtmux\fP layout may be fscked up.
+\fBttyfire_resizer\fP fixes this. It's automatically started by the
+\fBttyfire\fP frontend.
+.TP
+\fBcampfire_room\fP \fIpipe_name\fP \fIroom_name\fP
+\fBcampfire_room\fP uses \fBpython2-pyfire\fP to connect to Campfire.
+This script does the actual work.
+
+The script joins exactly one room. \fBcampfire_room\fP outputs anything
+directly to the terminal \(em however, it reads commands from a named
+pipe (see \fBfifo\fP(7)). Anything you write to that pipe will be
+forwarded to the room, except for some special commands like
+\(lq/users\(rq and \(lq/uploads\(rq. Issue \(lq/help\(rq for a list of
+available commands.
+.SH FILES
+.TP
+\fI~/.ttyfire\fP
+Configuration file.
+.TP
+\fI/tmp/campfire\fP
+Pastes will be collected here.
+.TP
+\fI/tmp/links.log\fP
+Seen URLs will be appended to this file.
+.TP
+\fI/tmp/campfire/rooms\fP
+For each room you've joined, a directory will be created here. The FIFO
+will reside in that directory.
+.SH BUGS
+Currently, no bugs are known. If you find one, we invite you to report
+it at the GitHub Issue tracker (http://github.com/vain/ttyfire/issues).
+.SH LICENSE
+\fBttyfire\fP is released as \(lqPIZZA-WARE\(rq. See the accompanying
+\fILICENSE\fP file.
+.SH AUTHORS
+\fBttyfire\fP and this man page were written by Peter Hofmann.
+.SH "SEE ALSO"
+.BR tmux (1),
+.BR urlview (1),
+.BR fifo (7).
