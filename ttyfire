@@ -2,6 +2,8 @@
 
 session=ttyfire
 
+pgrep ttyfire_resizer >/dev/null 2>&1 || ttyfire_resizer "$session" 5 &
+
 if ! tmux attach-session -t "$session" 2>/dev/null
 then
 	d=/tmp/ttyfire-dirty-startup
@@ -16,6 +18,5 @@ then
 		echo 'sleep 0.5'
 	done >> "$d"
 	chmod u+x "$d"
-	ttyfire_resizer "$session" 5 &
 	tmux new-session -s "$session" "$d"
 fi
