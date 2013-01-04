@@ -7,7 +7,9 @@ pgrep ttyfire_resizer >/dev/null 2>&1 || ttyfire_resizer "$session" 5 &
 if ! tmux attach-session -t "$session" 2>/dev/null
 then
 	d=/tmp/ttyfire-dirty-startup
-	readarray -ts 4 channels < ~/.ttyfire
+	readarray -t config < ~/.ttyfire
+	IFS=';'
+	channels=(${config[3]})
 	(
 		echo "tmux set renumber-windows on"
 		echo "tmux bind 'F1' run-shell ttyfire_quit"

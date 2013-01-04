@@ -32,13 +32,12 @@ this:
 .P
 \f(CW
 .nf
-	your-companys-subdomain
-	your.login.e-mail@example.invalid
-	yourpassword
-	highlight1;another highlight;highlight3
-	Room 1
-	Another Room
-	Yet another room!
+1		your-companys-subdomain
+2		your.login.e-mail@example.invalid
+3		yourpassword
+4		Chillout;Support;Team IT;Team Yahoo
+5		andy;food;penguin
+6		Support;Team IT
 .fi
 \fP
 .P
@@ -56,14 +55,19 @@ because the underlying library (\fBpython2-pyfire\fP) requires you to
 specify the password.
 .TP
 Line 4:
+A list of rooms, separated by semicolons, that \fBttyfire\fP will
+automatically join.
+.TP
+Line 5:
 A list of strings, separated by semicolons, that \fBttyfire\fP will
 highlight. Those strings will be visually marked. Additionally, when
 such a string is encountered, the terminal bell will be ringing. You may
 want to configure your terminal emulator to activate an urgency hint on
 its window (e.g., see \(lqbellIsUrgent\(rq for \fBxterm\fP(1)).
 .TP
-Lines 5 and following:
-Rooms to join when \fBttyfire\fP starts.
+Line 6:
+A list of rooms, separated by semicolons, for which \fBttyfire\fP will
+always ring the terminal bell when there's a message.
 .SH "NICKNAME COMPLETION"
 To help you highlight other people, you can start a message with
 \fB@parts,of,some,nicks:\fP or just \fB@nick:\fP. Like this:
