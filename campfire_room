@@ -265,13 +265,16 @@ if __name__ == "__main__":
     with open(os.path.expanduser("~/.ttyfire"), "r") as fp:
         config = [i.strip() for i in fp.readlines()]
 
-    HIGHLIGHTS = config[4].split(";")
+    if config[4] != '':
+        HIGHLIGHTS = config[4].split(";")
+    else:
+        HIGHLIGHTS = []
 
     pipe_name = sys.argv[1]
     room_name = sys.argv[2]
 
     ALWAYS_HIGHLIGHT = False
-    if room_name in config[5].split(";"):
+    if config[5] != '' and room_name in config[5].split(";"):
         ALWAYS_HIGHLIGHT = True
 
     if not os.path.exists(pipe_name):
