@@ -213,16 +213,24 @@ def quit(pipe_name, ret=0):
 def error(e, room):
     print "\"%s\" error: %s" % (room.name, e)
 
+def toggle_alerting():
+    global ALWAYS_HIGHLIGHT
+    ALWAYS_HIGHLIGHT = not ALWAYS_HIGHLIGHT
+    print ""
+    print "Alerting on events: " + str(ALWAYS_HIGHLIGHT)
+    print ""
+
 def show_help():
     print ""
-    print "/users       List users in the current room."
-    print "/users_full  Likewise but don't shorten names."
-    print "/rooms       List all rooms."
-    print "/uploads     List uploads in the current room."
-    print "/send $f     Upload a file."
-    print "/pastef $f   Paste a file."
-    print "/pastex      Paste from X11 clipboard."
-    print "/leave       Leave the room."
+    print "/users            List users in the current room."
+    print "/users_full       Likewise but don't shorten names."
+    print "/rooms            List all rooms."
+    print "/uploads          List uploads in the current room."
+    print "/send $f          Upload a file."
+    print "/pastef $f        Paste a file."
+    print "/pastex           Paste from X11 clipboard."
+    print "/leave            Leave the room."
+    print "/toggle_alerting  Toggle state of \"alert always\"."
     print ""
 
 
@@ -320,6 +328,8 @@ if __name__ == "__main__":
                     paste_x(room)
                 elif cmd == "/rooms":
                     list_rooms(campfire)
+                elif cmd == "/toggle_alerting":
+                    toggle_alerting()
                 elif cmd.startswith("/"):
                     show_help()
                 else:
