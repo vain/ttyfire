@@ -43,6 +43,7 @@ CONFIGURATION
        4         Chillout;Support;Team IT;Team Yahoo
        5         andy;food;penguin
        6         Support;Team IT
+       7         5
 
 
        To be more precise:
@@ -75,18 +76,22 @@ CONFIGURATION
               fire  will  always ring the terminal bell when there's a
               message.
 
-       All lines must be present. If you don't  want  to  specify  any
+       Line 7:
+              Show backlog for the last 5 days. Set to  0  to  disable
+              backlogs.
+
+       All  lines  must  be  present. If you don't want to specify any
        highlights, use an empty line.
 
 NICKNAME COMPLETION
-       To  help  you  highlight  other people, you can start a message
+       To help you highlight other people, you  can  start  a  message
        with @parts,of,some,nicks: or just @nick:. Like this:
 
 
             @mar,cas,and: hey, listen to me!
 
 
-       “mar”, “cas” and “and” will be replaced with  their  full  user
+       “mar”,  “cas”  and  “and” will be replaced with their full user
        names. Thus, the actual message might look like this:
 
 
@@ -99,16 +104,16 @@ NICKNAME COMPLETION
 CATCHING LINKS AND PASTES
        As ttyfire wraps all text to a fixed width, it may be difficult
        to click on or select URL links in your terminal. To solve this
-       problem,  ttyfire   appends   each   URL   link   to   a   file
-       (/tmp/links.log).   You  can then use something like urlview(1)
+       problem,   ttyfire   appends   each   URL   link   to   a  file
+       (/tmp/links.log).  You can then use something  like  urlview(1)
        to comfortably access this file.
 
-       The same applies  to  pastes.  ttyfire  stores  each  paste  in
+       The  same  applies  to  pastes.  ttyfire  stores  each paste in
        /tmp/campfire and announces the path to the corresponding file.
 
 FRONTEND TOOLS
-       As   mentioned  earlier,  ttyfire  comprises  several  scripts.
-       There's two categories: Frontend tools and plumbing tools.  The
+       As  mentioned  earlier,  ttyfire  comprises  several   scripts.
+       There's  two categories: Frontend tools and plumbing tools. The
        frontend tools are the ones that you start manually; the plumb‐
        ing tools are run for you by ttyfire or the other scripts.
 
@@ -118,55 +123,55 @@ FRONTEND TOOLS
 
        ttyfire_new room
               You have to create a new window inside of a tmux session
-              and launch another instance of ttyfire_new  to  join  an
+              and  launch  another  instance of ttyfire_new to join an
               additional channel.
 
-              ttyfire_new  must  be run inside of tmux and creates two
+              ttyfire_new must be run inside of tmux and  creates  two
               panes. The upper pane shows the output of campfire_room,
               the lower pane runs ttyfire_pipefiller.
 
        ttyfire_quit
-              Kills  all  instances  of ttyfire_pipefiller and sends a
-              “/leave” to all open channels. This script  can  be  run
-              from  everywhere,  there's  no need to run it inside the
+              Kills all instances of ttyfire_pipefiller  and  sends  a
+              “/leave”  to  all  open channels. This script can be run
+              from everywhere, there's no need to run  it  inside  the
               tmux session.
 
               ttyfire_new binds ttyfire_quit on “^B F1” (or “^A F1” if
               you're using GNU screen bindings). This is the suggested
-              way to quit the whole application.  To  leave  a  single
+              way  to  quit  the  whole application. To leave a single
               room, just issue “/leave”.
 
-              Note:  If  you  do  not properly leave a room, you might
-              still be listed as “online” by Campfire. Timeouts  don't
-              appear  to  work  correctly  (this also applies to other
+              Note: If you do not properly leave  a  room,  you  might
+              still  be listed as “online” by Campfire. Timeouts don't
+              appear to work correctly (this  also  applies  to  other
               clients such as camper_van).  This can be very confusing
               for other people.
 
 PLUMBING TOOLS
-       These  are  the  scripts  which  are run behind the scenes. You
+       These are the scripts which are  run  behind  the  scenes.  You
        don't want to run these tools manually.
 
        ttyfire_pipefiller pipe_name
               ttyfire_pipefiller  is  a  simple  read-write-loop  that
-              reads  from stdin and writes to the pipe. It acts as the
+              reads from stdin and writes to the pipe. It acts as  the
               “command line” of ttyfire.
 
        ttyfire_resizer session interval
-              Periodically resizes all input panes to a fixed  height.
+              Periodically  resizes all input panes to a fixed height.
               This may come in handy when you use a tiling window man‐
               ager: If the terminal window gets resized, the tmux lay‐
-              out  may be fscked up.  ttyfire_resizer fixes this. It's
+              out may be fscked up.  ttyfire_resizer fixes this.  It's
               automatically started by the ttyfire frontend.
 
        campfire_room pipe_name room_name
-              campfire_room uses python2-pyfire to  connect  to  Camp‐
+              campfire_room  uses  python2-pyfire  to connect to Camp‐
               fire.  This script does the actual work.
 
               The script joins exactly one room. campfire_room outputs
-              anything directly to the terminal —  however,  it  reads
-              commands  from  a named pipe (see fifo(7)). Anything you
+              anything  directly  to  the terminal — however, it reads
+              commands from a named pipe (see fifo(7)).  Anything  you
               write to that pipe will be forwarded to the room, except
-              for  some special commands like “/users” and “/uploads”.
+              for some special commands like “/users” and  “/uploads”.
               Issue “/help” for a list of available commands.
 
 FILES
@@ -185,11 +190,11 @@ FILES
 
 BUGS
        Currently, no bugs are known. If you find one, we invite you to
-       report     it     at     the     GitHub      Issue      tracker
+       report      it      at     the     GitHub     Issue     tracker
        (http://github.com/vain/ttyfire/issues).
 
 LICENSE
-       ttyfire  is  released  as  “PIZZA-WARE”.  See  the accompanying
+       ttyfire is  released  as  “PIZZA-WARE”.  See  the  accompanying
        LICENSE file.
 
 AUTHORS
