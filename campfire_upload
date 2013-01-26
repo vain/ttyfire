@@ -1,0 +1,44 @@
+#!/usr/bin/env python2
+
+import os
+import pyfire
+import sys
+
+def progress(current, total):
+    sys.stdout.write(".")
+    sys.stdout.flush()
+
+def finished():
+    sys.stdout.write("\n")
+    sys.stdout.flush()
+
+def error(*args):
+    print "\nUpload STOPPED due to ERRORS:"
+    for i in args:
+        print "\t{0}".format(i)
+
+if __name__ == "__main__":
+    with open(os.path.expanduser("~/.ttyfire"), "r") as fp:
+        config = [i.strip() for i in fp.readlines()]
+
+    room_name = sys.argv[1]
+
+    print "Uploader is connecting..."
+
+    campfire = pyfire.Campfire(config[0], config[1], config[2], ssl=True)
+    room = campfire.get_room_by_name(room_name)
+
+    for i in sys.argv[2:]:
+        print "Starting upload of '{0}'...".format(i)
+        upload = room.upload(
+            i,
+            progress_callback = progress,
+            finished_callback = finished,
+            error_callback = error
+        )
+        upload.start()
+        upload.join()
+
+    print "All uploads done."
+
+# vim: set ts=4 sw=4 et sta :

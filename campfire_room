@@ -2,8 +2,10 @@
 
 import datetime
 import os
+import pipes
 import pyfire
 import re
+import subprocess
 import sys
 import textwrap
 import time
@@ -176,21 +178,11 @@ def list_rooms(campfire):
     print "Rooms: %s" % ", ".join([i["name"] for i in campfire.get_rooms()])
     print ""
 
-def upload_progress(current, total):
-    print "Uploading %d out of %d (%-.1f%%)" % (current, total,
-                                                100 * (float(current)
-                                                       / float(total)))
-    print ""
-
-def upload_finished():
-    print "Upload finished."
-    print ""
-
-def upload_new(room, filename):
-    room.upload(os.path.expanduser(filename),
-                progress_callback=upload_progress,
-                finished_callback=upload_finished,
-                error_callback=error).start()
+def upload_new(room_name, filenames):
+    # XXX: Yes, only quote the room name. Allows globbing of file names!
+    subprocess.call("campfire_upload {0} {1} &".format(pipes.quote(room_name),
+                                                       filenames),
+                    shell=True)
 
 def paste_file(room, filename):
     with open(os.path.expanduser(filename), "r") as fp:
@@ -321,7 +313,7 @@ if __name__ == "__main__":
                 elif cmd == "/uploads":
                     list_uploads(room)
                 elif cmd.startswith("/send "):
-                    upload_new(room, cmd[6:])
+                    upload_new(room_name, cmd[6:])
                 elif cmd.startswith("/pastef "):
                     paste_file(room, cmd[8:])
                 elif cmd == "/pastex":
