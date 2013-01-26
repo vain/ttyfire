@@ -24,4 +24,4 @@ mkdir -p "$base"
 
 clear
 
-campfire_room "$base/in" "$room"
+campfire_room "$base/in" "$room" 2>&1 | tee "$base/log"
