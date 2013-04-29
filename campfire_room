@@ -34,7 +34,7 @@ def trim_len(text, maxlen=12):
         text = ("{0:>" + str(maxlen) + "}").format(text)
     return text
 
-def wrapped(text, width=70, indent=34):
+def wrapped(text, width=45, indent=34):
     lines = textwrap.wrap(text, width)
     for i in range(1, len(lines)):
         lines[i] = (" " * indent) + lines[i]
