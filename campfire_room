@@ -12,7 +12,9 @@ import time
 
 def message_to_local(message):
     when = message.get_data()["created_at"]
-    return when - datetime.timedelta(seconds=time.timezone)
+    # XXX: This is ugly but it works and is good enough.
+    diff = datetime.datetime.utcnow() - datetime.datetime.now()
+    return when - diff
 
 def show(message, processed):
     print "%s%s%s %s%s%s%s %s" % (
